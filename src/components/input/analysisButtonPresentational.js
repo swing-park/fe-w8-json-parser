@@ -1,5 +1,3 @@
-export class AnalysisButtonPresentational {
-	constructor() {
-
-	}
+export default class AnalysisButtonPresentational {
+  constructor() {}
 }
