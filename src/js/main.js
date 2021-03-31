@@ -1,6 +1,7 @@
 import { tokenize } from "./tokenizer.js";
 import { lexicalize } from "./lexer.js";
 import { parse } from "./parser.js";
+import { go } from "./utils.js";
 
 const userInput = `["la3", 
                     [null, false, 
@@ -23,5 +24,8 @@ const userInput = `["la3",
                       true, 
                       "[123]"
                     ]`;
-const result = parse(lexicalize(tokenize(userInput)));
-console.log(JSON.stringify(result));
+
+const stringify = (tree) => JSON.stringify(tree, null, " ");
+
+const parsedJson = go(userInput, tokenize, lexicalize, parse, stringify);
+console.log(parsedJson);
