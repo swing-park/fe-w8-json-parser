@@ -1,81 +1,89 @@
-const parse = (lexes) => {
-	const stack = [];
+import { condition } from "../../utils/utils.js";
 
-	for (let i = 0; i < lexes.length; i++) {
+const parse = (lexes, parentNode = null, idx = 0) => {
+	for (let i = idx; i < lexes.length;) {
 		const lex = lexes[i];
-		if (lex.type === "array") {
-			if (lex.id === "[") {
-				stack.push({ type: lex.type, child: lex.child, value: lex.value });
-			} else if (lex.id === "]") {
-				const child = stack.pop();
-				if (stack.length) {
-					if (stack[stack.length - 1].type === "objectProperty") {
-						stack[stack.length - 1].value.propValue = child;
-						stack[stack.length - 2].child.push(stack[stack.length - 1]);
-						stack.pop();
-					} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(child);
-				} else return child;
+
+		if (condition.COLON(lex)) i++;
+
+		if (condition.ARRAY(lex)) {
+			const currNode = { type: lex.type, child: lex.child, value: lex.value };
+			if (condition.OPENARR(lex)) {
+				const newIdx = parse(lexes, currNode, i + 1);
+				if (!parentNode) return currNode;
+				if (parentNode.type === "objectProperty") {
+					parentNode.value.propValue = currNode;
+					return newIdx;
+				}
+				if (parentNode.type === "array" || parentNode.type === "object") parentNode.child.push(currNode);
+				i = newIdx;
 			}
-			continue;
+
+			if (condition.CLOSEARR(lex)) return i + 1;
 		}
 
-		if (lex.type === "object") {
+		if (condition.OBJECT(lex)) {
 			if (!lex.id) {
-				stack[stack.length - 1].child.push({ type: lex.type, value: lex.value });
+				const currNode = { type: lex.type, value: lex.value };
+				parentNode.child.push(currNode);
+				i++;
 				continue;
 			}
-			if (lex.id === "{") {
-				stack.push({ type: lex.type, child: lex.child });
-			} else {
-				const child = stack.pop();
-				if (stack.length) {
-					if (stack[stack.length - 1].type === "objectProperty") {
-						stack[stack.length - 1].value.propValue = child;
-						stack[stack.length - 2].child.push(stack[stack.length - 1]);
-						stack.pop();
-					} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(child);
-				} else return child;
+
+			const currNode = { type: lex.type, child: lex.child };
+			if (condition.OPENOBJ(lex)) {
+				const newIdx = parse(lexes, currNode, i + 1);
+				if (!parentNode) return currNode;
+				if (parentNode.type === "objectProperty") {
+					parentNode.value.propValue = currNode;
+					return newIdx;
+				}
+				if (parentNode.type === "array" || parentNode.type === "object") parentNode.child.push(currNode);
+				i = newIdx;
 			}
-			continue;
+
+			if (condition.CLOSEOBJ(lex)) return i + 1;
 		}
 
-		if (lex.type === "string") {
-			if (lexes[i + 1].type === "colon") {
-				const obj = {
-					value: null,
+		if (condition.STRING(lex)) {
+			const currNode = { type: lex.type, value: lex.value };
+			if (condition.COLON(lexes[i + 1])) {
+				const currObj = {
+					value: {
+						propKey: currNode,
+						propValue: null,
+					},
 					type: "objectProperty",
 				};
-				obj.value = {
-					propKey: { type: lex.type, value: lex.value },
-					propValue: null,
-				};
-				stack.push(obj);
-			} else if (lexes[i - 1].type === "colon") {
-				stack[stack.length - 1].value.propValue = { type: lex.type, value: lex.value };
-				const child = stack.pop();
-				stack[stack.length - 1].child.push(child);
+
+				const newIdx = parse(lexes, currObj, i + 1);
+				parentNode.child.push(currObj);
+				i = newIdx;
+			} else if (condition.COLON(lexes[i - 1])) {
+				parentNode.value.propValue = currNode;
+				return i + 1;
 			} else {
-				const element = { type: lex.type, value: lex.value };
-				if (stack[stack.length - 1].type === "objectProperty") {
-					stack[stack.length - 1].value.propValue = element;
-					stack[stack.length - 2].child.push(stack[stack.length - 1]);
-					stack.pop();
-				} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(element);
-				else stack.push(element);
+				if (parentNode.type === "objectProperty") {
+					parentNode.value.propValue = currNode;
+					return i + 1;
+				}
+				if (parentNode.type === "array" || parentNode.type === "object") parentNode.child.push(currNode);
+				i++;
 			}
-			continue;
 		}
 
-		if (lex.type === "number" || lex.type === "undefined" || lex.type === "boolean") {
-			const element = { type: lex.type, value: lex.value };
-			if (stack[stack.length - 1].type === "objectProperty") {
-				stack[stack.length - 1].value.propValue = element;
-				stack[stack.length - 2].child.push(stack[stack.length - 1]);
-				stack.pop();
-			} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(element);
-			else stack.push(element);
+		if (condition.OTHER(lex)) {
+			const currNode = { type: lex.type, value: lex.value };
+			if (!parentNode) return currNode;
+			if (parentNode.type === "objectProperty") {
+				parentNode.value.propValue = currNode;
+				return i + 1;
+			}
+			if (parentNode.type === "array" || parentNode.type === "object") parentNode.child.push(currNode);
+			i++;
 		}
 	}
+	return parentNode;
 };
 
 export { parse };
