@@ -24,4 +24,4 @@ const userInput = `["la3",
                       "[123]"
                     ]`;
 const result = parse(lexicalize(tokenize(userInput)));
-console.log(result);
+console.log(JSON.stringify(result));

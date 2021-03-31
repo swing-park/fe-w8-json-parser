@@ -1,1 +1,32 @@
 @import "./reset.scss";
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  width: 60%;
+  height: 700px;
+}
+
+.input-section {
+  border: 1px solid #222;
+  padding: 10px;
+  margin: 10px;
+  height: 100%;
+  flex-grow: 2;
+}
+
+.output-section {
+  border: 1px solid #222;
+  padding: 10px;
+  margin: 10px;
+  height: 100%;
+  flex-grow: 2;
+}

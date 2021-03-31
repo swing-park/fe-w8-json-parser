@@ -1,51 +1,81 @@
 const parse = (lexes) => {
-	const arrStack = []
-	const strStack = []
-	const result = []
+	const stack = [];
 
-	lexes.forEach((lex, i, self) => {
+	for (let i = 0; i < lexes.length; i++) {
+		const lex = lexes[i];
 		if (lex.type === "array") {
 			if (lex.id === "[") {
-				// if (arrStack.length) arrStack[arrStack.length - 1].push([]) +
-				// 	 }
-				result.push(arrStack.pop())
+				stack.push({ type: lex.type, child: lex.child, value: lex.value });
+			} else if (lex.id === "]") {
+				const child = stack.pop();
+				if (stack.length) {
+					if (stack[stack.length - 1].type === "objectProperty") {
+						stack[stack.length - 1].value.propValue = child;
+						stack[stack.length - 2].child.push(stack[stack.length - 1]);
+						stack.pop();
+					} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(child);
+				} else return child;
 			}
-		} else if (lex.type === "string") {
-			if (self[i + 1] === ":") {
-				// objStack - key에다가 할 것 
-			} else if (self[i - 1] === ":") {
-				//objStack - value에다가 할 것
-			} else {
-				if (arrStack.length) arrStack[arrStack.length - 1].push(lex)
-				else result.push()
-			}
+			continue;
 		}
-	})
-}
 
-// parser 구현중 (미완)
-function test(lexes, idx, result) {
+		if (lex.type === "object") {
+			if (!lex.id) {
+				stack[stack.length - 1].child.push({ type: lex.type, value: lex.value });
+				continue;
+			}
+			if (lex.id === "{") {
+				stack.push({ type: lex.type, child: lex.child });
+			} else {
+				const child = stack.pop();
+				if (stack.length) {
+					if (stack[stack.length - 1].type === "objectProperty") {
+						stack[stack.length - 1].value.propValue = child;
+						stack[stack.length - 2].child.push(stack[stack.length - 1]);
+						stack.pop();
+					} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(child);
+				} else return child;
+			}
+			continue;
+		}
 
-	for (let i = idx; i < lexes.length;) {
-		if (lexes[i].type === "array") {
-			if (lexes[i].id === "[") {
-				const [tempRes, newIdx] = test(lext, i + 1, [])
-				lexes[i].child.push(tempRes)
-				i = newIdx + 1
+		if (lex.type === "string") {
+			if (lexes[i + 1].type === "colon") {
+				const obj = {
+					value: null,
+					type: "objectProperty",
+				};
+				obj.value = {
+					propKey: { type: lex.type, value: lex.value },
+					propValue: null,
+				};
+				stack.push(obj);
+			} else if (lexes[i - 1].type === "colon") {
+				stack[stack.length - 1].value.propValue = { type: lex.type, value: lex.value };
+				const child = stack.pop();
+				stack[stack.length - 1].child.push(child);
 			} else {
-				return [result, i]
+				const element = { type: lex.type, value: lex.value };
+				if (stack[stack.length - 1].type === "objectProperty") {
+					stack[stack.length - 1].value.propValue = element;
+					stack[stack.length - 2].child.push(stack[stack.length - 1]);
+					stack.pop();
+				} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(element);
+				else stack.push(element);
 			}
-		} else if (lexes[i].type === "object") {
-			if (!lexes[i].id) {
-				result.push(lexes[i])
-				i++
-			} else {
-				// object
-			}
-		} else {
-			result.push(lexes[i])
-			i++
+			continue;
+		}
+
+		if (lex.type === "number" || lex.type === "undefined" || lex.type === "boolean") {
+			const element = { type: lex.type, value: lex.value };
+			if (stack[stack.length - 1].type === "objectProperty") {
+				stack[stack.length - 1].value.propValue = element;
+				stack[stack.length - 2].child.push(stack[stack.length - 1]);
+				stack.pop();
+			} else if (stack[stack.length - 1].type === "array" || stack[stack.length - 1].type === "object") stack[stack.length - 1].child.push(element);
+			else stack.push(element);
 		}
 	}
+};
 
-}
+export { parse };
