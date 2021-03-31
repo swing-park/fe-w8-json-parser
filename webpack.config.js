@@ -3,12 +3,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "/src/js/main.js",
+  entry: "./src/public/index.js",
   devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "main.js",
-    publicPath: "/",
+    filename: "index.js",
+    // publicPath: "/",
     // if you want to auto-load edited web-page after saving, publickPath should "/" with webpack-dev-server.
   },
   module: {
@@ -17,7 +17,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, use: "babel-loader" },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
+  plugins: [new HtmlWebpackPlugin({ template: "./src/public/index.html" })],
   devServer: {
     contentBase: path.resolve(__dirname + "/dist"),
     index: "index.html",
