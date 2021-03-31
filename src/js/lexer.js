@@ -1,11 +1,3 @@
-import { regex } from "./utils.js";
-
-// const DEFINEKEYWORD = {
-//     '{' : 'array',
-//     ...switch
-// }
-
-// 리팩토링 하고싶다.. 어케 하지
 const lexicalize = (tokens) => {
   return tokens.reduce((acc, token) => {
     if (token === "[" || token === "]") {

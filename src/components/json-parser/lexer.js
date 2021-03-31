@@ -1,5 +1,3 @@
-import { regex } from "../../utils/regex.js";
-
 const lexicalize = (tokens) => {
 	return tokens.reduce((acc, token) => {
 		if (token === "[" || token === "]") {

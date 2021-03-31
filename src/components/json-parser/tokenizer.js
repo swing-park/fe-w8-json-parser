@@ -1,4 +1,4 @@
-import { regex } from "../../utils/regex.js";
+import { regex } from "../../utils/utils.js";
 
 const tokenize = (userInput) => {
 	return userInput
