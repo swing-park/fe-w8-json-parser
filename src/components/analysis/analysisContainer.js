@@ -1,0 +1,1 @@
+export const analysisContainer = ({ $target, data }) => { }
