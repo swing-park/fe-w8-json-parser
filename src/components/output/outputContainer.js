@@ -4,25 +4,30 @@ import "./output.scss";
 class OutputContainer {
 	constructor({ $target }) {
 		this.presentationals = null;
+		this.stringifiedData = "";
 
 		this.$output = document.createElement("section");
 		this.$output.className = "output-section";
 		$target.appendChild(this.$output)
 
-		this.setState($target);
+		this.setState();
 	}
 
-	setState($target) {
-		this.render($target)
+	setState() {
+		this.render()
 	}
 
-	test() {
-		console.log("test")
+	updateLog(stringifiedData) {
+		this.stringifiedData = stringifiedData;
+		this.setState();
 	}
 
-	render($target) {
+	render() {
 		this.presentationals = {
-			output: new OutputPresentational({ $target: this.$output })
+			output: new OutputPresentational({
+				$target: this.$output,
+				stringifiedData: this.stringifiedData
+			})
 		};
 	}
 }

@@ -14,9 +14,9 @@ export default class App {
 	}
 
 	render($target) {
-		this.components = {
-			inputContainer: new InputContainer({ $target }),
-			outputContainer: new OutputContainer({ $target })
-		}
+		const outputContainer = new OutputContainer({ $target });
+		const inputContainer = new InputContainer({ $target, outputContainer })
+
+		this.components = { inputContainer, outputContainer }
 	}
 }

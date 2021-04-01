@@ -1,25 +1,15 @@
-import OutputContainer from "../output/outputContainer.js";
 import InputPresentational from "./inputPresentational.js";
 import { tokenize } from "../json-parser/tokenizer.js";
 import { lexicalize } from "../json-parser/lexer.js";
 import { parse } from "../json-parser/parser.js";
-// import {parseJson} from "../json-parser/main.js"
+import { go } from "../../utils/utils.js";
 import "./input.scss";
-import { pipe } from "../../utils/utils.js";
 
 class InputContainer {
-  constructor({ $target }) {
+  constructor({ $target, outputContainer }) {
+    this.outputContainer = outputContainer;
     this.presentationals = null;
     this.buttonStatus = false;
-
-    //parser함수 이니셜라이즈
-    this.tokenize = tokenize;
-    this.lexicalize = lexicalize;
-    this.parse = parse;
-
-    //output notify를 위한 Container init
-    // this.output = OutputContainer;
-    // console.log(this.output.test)
 
     this.$input = document.createElement("section");
     this.$input.className = "input-section";
@@ -44,15 +34,9 @@ class InputContainer {
 
   handleAnalysisButton() {
     const inputValue = this.getInputValue();
-    const result = go(inputValue, tokenize, lexicalize, parse);
-    // const tokens = this.tokenize(inputValue);
-    // const lexicalizedTokens = this.lexicalize(tokens);
-    // const parsedData = this.parse(lexicalizedTokens);
-    // console.log(parsedData)
-    // const a = JSON.stringify(parsedData, null, ' ')
-    // console.log(a)
-    document.querySelector(".analysis-log").innerHTML = "";
-    document.querySelector(".analysis-log").innerText = JSON.stringify(result, null, " ");
+    const parsedData = go(inputValue, tokenize, lexicalize, parse);
+    const stringifiedData = JSON.stringify(parsedData, null, " ");
+    this.outputContainer.updateLog(stringifiedData);
   }
 
   getInputValue() {
