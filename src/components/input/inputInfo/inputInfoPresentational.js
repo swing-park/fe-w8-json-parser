@@ -8,7 +8,7 @@ class InputInfoPresentational {
 		$inputInfo_section.className = "input-info-section";
 		$target.appendChild($inputInfo_section);
 
-		const $inputInfo = `<span class="input-info">JSON 데이터를 추가해주세요 홀홀</span>`
+		const $inputInfo = `<span class="input-info">JSON 데이터를 추가해주세요</span>`
 
 		$inputInfo_section.insertAdjacentHTML("beforeend", $inputInfo);
 	}

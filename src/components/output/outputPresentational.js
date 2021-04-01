@@ -2,18 +2,18 @@ import AnalysisInfoPresentational from "./analysisInfo/analysisInfoPresentationa
 import AnalysisLogPresentational from "./analysisLog/analysisLogPresentational.js"
 
 class OutputPresentational {
-	constructor({ $target }) {
+	constructor({ $target, stringifiedData }) {
 		this.presentationals = null;
 
-		this.render({ $target })
+		this.render({ $target, stringifiedData })
 	}
 
-	render({ $target }) {
+	render({ $target, stringifiedData }) {
 		$target.innerHTML = "";
 
 		this.presentationals = {
 			analysisInfo: new AnalysisInfoPresentational({ $target }),
-			analysisLog: new AnalysisLogPresentational({ $target })
+			analysisLog: new AnalysisLogPresentational({ $target, stringifiedData })
 		};
 
 	}

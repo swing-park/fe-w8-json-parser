@@ -6,15 +6,15 @@ class InputPresentational {
 	constructor({ $target, buttonStatus, onKeyupUserInput, onClickAnalysisButton }) {
 		this.presentationals = null;
 
-		this.redner({ $target, buttonStatus, onKeyupUserInput, onClickAnalysisButton })
+		this.render($target, buttonStatus, onKeyupUserInput, onClickAnalysisButton)
 	}
 
-	redner({ $target, buttonStatus, onKeyupUserInput, onClickAnalysisButton }) {
+	render($target, buttonStatus, onKeyupUserInput, onClickAnalysisButton) {
 		$target.innerHTML = "";
 
 		this.presentationals = {
 			inputInfo: new InputInfoPresentational({ $target }),
-			userInput: new UserInputPresentational({ $target, buttonStatus, onKeyupUserInput }),
+			userInput: new UserInputPresentational({ $target, onKeyupUserInput }),
 			analysisButton: new AnalysisButtonPresentational({ $target, buttonStatus, onClickAnalysisButton })
 		}
 	}

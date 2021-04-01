@@ -1,9 +1,5 @@
-.input-info-section {
-  display: flex;
-  margin: 10px;
-}
+@import "../../../public/common.scss";
 
-.input-info {
-  font-size: 1.5rem;
-  font-weight: 700;
+.input-info-section {
+  @extend .info-style;
 }

@@ -13,7 +13,7 @@ class AnalysisButtonPresentational {
     $target.appendChild($analysisButton_section);
 
     let $analysisButton;
-    if (buttonStatus) { // true일때 disabled
+    if (buttonStatus) {
       $analysisButton = `<button class="analysis-button" disabled>분석하기</button>`
     } else {
       $analysisButton = `<button class="analysis-button">분석하기</button>`

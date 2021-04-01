@@ -8,7 +8,7 @@ class AnalysisInfoPresentational {
 		$analysisInfo_section.className = "analysis-info-section";
 		$target.appendChild($analysisInfo_section);
 
-		const $analysisInfo = `<span class="analysis-info">분석 결과입니다 홀홀</span>`
+		const $analysisInfo = `<span class="analysis-info">분석 결과입니다</span>`
 
 		$analysisInfo_section.insertAdjacentHTML("beforeend", $analysisInfo);
 	}

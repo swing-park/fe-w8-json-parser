@@ -1,11 +1,24 @@
+@import "../../../public/index.scss";
+
 .analysis-button-section {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .analysis-button {
+  width: 91%;
   padding: 10px;
-  background-color: #fff;
-  border-radius: 10px;
+  background-color: $window-color;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-bottom: 3px solid #222;
+  border-right: 3px solid #222;
   outline: none;
+  font-weight: bolder;
+  font-size: 18px;
+  margin-bottom: 10px;
+
+  &:active {
+    transform: scale(0.99);
+  }
 }
