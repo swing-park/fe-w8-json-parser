@@ -1,15 +1,13 @@
 class UserInputPresentational {
-	constructor({ $target, buttonStatus, onKeyupUserInput }) {
-		this.render($target, buttonStatus, onKeyupUserInput)
+	constructor({ $target, onKeyupUserInput }) {
+		this.render($target, onKeyupUserInput)
 	}
 
-	addEvent($target, buttonStatus, onKeyupUserInput) {
-		if (buttonStatus) {
-			$target.addEventListener("keyup", () => onKeyupUserInput())
-		}
+	addEvent($target, onKeyupUserInput) {
+		$target.addEventListener("keyup", () => onKeyupUserInput())
 	}
 
-	render($target, buttonStatus, onKeyupUserInput) {
+	render($target, onKeyupUserInput) {
 		const $userInput_section = document.createElement("section");
 		$userInput_section.className = "user-input-section";
 		$target.appendChild($userInput_section);
@@ -18,7 +16,7 @@ class UserInputPresentational {
 
 		$userInput_section.insertAdjacentHTML("beforeend", $userInput);
 
-		this.addEvent($target, buttonStatus, onKeyupUserInput)
+		this.addEvent($target, onKeyupUserInput)
 	}
 };
 

@@ -9,7 +9,7 @@ class InputContainer {
   constructor({ $target, outputContainer }) {
     this.outputContainer = outputContainer;
     this.presentationals = null;
-    this.buttonStatus = false;
+    this.buttonStatus = true;
 
     this.$input = document.createElement("section");
     this.$input.className = "input-section";
@@ -23,13 +23,13 @@ class InputContainer {
   }
 
   handleUserInput() {
-    // if (this.buttonStatus) {
-    // 	console.log("helo'")
-    // 	this.buttonStatus = false;
-    // } else {
-    // 	this.buttonStatus = true;
-    // }
-    // this.setState();
+    const inputValue = this.getInputValue();
+    if (inputValue.length !== 0) {
+      this.buttonStatus = false;
+    } else {
+      this.buttonStatus = true;
+    }
+    this.$input.querySelector(".analysis-button").disabled = this.buttonStatus;
   }
 
   handleAnalysisButton() {
