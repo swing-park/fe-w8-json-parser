@@ -1,7 +1,6 @@
 import { condition } from "../../utils/utils.js";
 
 const parse = (lexes, parentNode = null, idx = 0) => {
-  if (!Array.isArray(lexes)) return lexes;
   for (let i = idx; i < lexes.length; ) {
     const lex = lexes[i];
 
