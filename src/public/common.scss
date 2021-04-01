@@ -1,0 +1,28 @@
+$font-color: #231e20;
+$window-backgrond-color: #017d7e;
+$light-gray: #d2d2d2;
+$navy: #07147c;
+$default-radius: 5px;
+$window-color: #a9aaaa;
+$dark-gray: #5f5f5f;
+
+.info-style {
+  display: flex;
+  background-color: $navy;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 5px;
+}
+
+.input-detail-style {
+  width: 90%;
+  height: 600px;
+  padding: 10px;
+  background-color: $window-color;
+  box-sizing: border-box;
+  border-top: 3px solid $dark-gray;
+  border-left: 3px solid $dark-gray;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  margin: 10px 0px;
+}
