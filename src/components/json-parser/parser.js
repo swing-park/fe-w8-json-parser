@@ -30,9 +30,9 @@ const parse = (lexes, parentNode = null, idx = 0) => {
 
     if (condition.STRING(lex) || condition.OTHER(lex)) {
       const currNode = { type: lex.type, value: lex.value };
-      if (condition.COLON(lexes[i + 1])) {
+      if (i + 1 < lexes.length && condition.COLON(lexes[i + 1])) {
         i = pushChild({ value: { propKey: currNode, propValue: null }, type: "objectProperty" }, i, parse);
-      } else if (condition.COLON(lexes[i - 1])) {
+      } else if (i - 1 >= 0 && condition.COLON(lexes[i - 1])) {
         parentNode.value.propValue = currNode;
         return i + 1;
       } else {
