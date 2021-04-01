@@ -3,9 +3,9 @@ import InputPresentational from "./inputPresentational.js";
 import { tokenize } from "../json-parser/tokenizer.js";
 import { lexicalize } from "../json-parser/lexer.js";
 import { parse } from "../json-parser/parser.js";
+import { go } from "../../utils/utils.js";
 // import {parseJson} from "../json-parser/main.js"
 import "./input.scss";
-import { pipe } from "../../utils/utils.js";
 
 class InputContainer {
   constructor({ $target }) {
