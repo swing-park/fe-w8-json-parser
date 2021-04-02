@@ -66,4 +66,4 @@ const result = go(inputValue, tokenize, lexicalize, parse);
 
 ### 함수 로직
 
-참고 : [JSON-Parser]("https://docs.google.com/presentation/d/1_tXFf3YjbWmUgmKwLNNrZCAW4iFoNe_QkW8zDcnghgQ/edit?usp=sharing")
+참고 : [JSON-Parser](https://docs.google.com/presentation/d/1_tXFf3YjbWmUgmKwLNNrZCAW4iFoNe_QkW8zDcnghgQ/edit?usp=sharing)
